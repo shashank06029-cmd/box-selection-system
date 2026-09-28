@@ -1,0 +1,251 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Box Selection System</title>
+
+    <link rel="stylesheet" href="{% static 'boxes/style.css' %}">
+</head>
+
+<body>
+
+    {% csrf_token %}
+
+    <header class="header">
+        <div class="container header-content">
+            <div>
+                <h1>Box Selection System</h1>
+                <p>Find the most suitable shipping box for your order.</p>
+            </div>
+
+            <a href="/admin/" class="admin-link">Admin Panel</a>
+        </div>
+    </header>
+
+
+    <main class="container main-content">
+
+        <section class="card">
+
+            <div class="section-header">
+                <div>
+                    <h2>Create Order</h2>
+                    <p>Add products and quantities to build your order.</p>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="field">
+                    <label for="product">Product</label>
+
+                    <select id="product">
+                        <option value="">Select a product</option>
+                    </select>
+                </div>
+
+                <div class="field quantity-field">
+                    <label for="quantity">Quantity</label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        min="1"
+                        value="1"
+                    >
+                </div>
+
+                <button id="add-product" class="primary-button">
+                    Add Product
+                </button>
+
+            </div>
+
+            <div id="form-error" class="error-message hidden"></div>
+
+        </section>
+
+
+        <section class="card">
+
+            <div class="section-header">
+                <div>
+                    <h2>Order Items</h2>
+                    <p>Products currently added to this order.</p>
+                </div>
+
+                <span id="item-count" class="item-count">
+                    0 items
+                </span>
+            </div>
+
+            <div id="empty-state" class="empty-state">
+                <div class="empty-icon">+</div>
+
+                <h3>No products added</h3>
+
+                <p>
+                    Select a product above to start building the order.
+                </p>
+            </div>
+
+            <div id="order-container" class="table-wrapper hidden">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Dimensions</th>
+                            <th>Weight</th>
+                            <th>Quantity</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="order-items"></tbody>
+
+                </table>
+
+            </div>
+
+            <button
+                id="recommend-button"
+                class="recommend-button"
+                disabled
+            >
+                Recommend Box
+            </button>
+
+        </section>
+
+
+        <section
+            id="result-section"
+            class="card result-card hidden"
+        >
+
+            <div class="section-header">
+                <div>
+                    <h2>Recommendation</h2>
+
+                    <p>
+                        Based on the products and quantities in your order.
+                    </p>
+                </div>
+            </div>
+
+
+            <div id="success-result" class="hidden">
+
+                <div class="recommendation">
+
+                    <div class="recommendation-main">
+
+                        <span class="result-label">
+                            Recommended Box
+                        </span>
+
+                        <h3 id="box-name">
+                            Medium Box
+                        </h3>
+
+                    </div>
+
+
+                    <div class="box-cost">
+
+                        <span>Cost</span>
+
+                        <strong id="box-cost">
+                            ₹50
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="details-grid">
+
+                    <div class="detail">
+
+                        <span>
+                            Box Capacity
+                        </span>
+
+                        <strong id="box-weight">
+                            5 kg
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            Order Weight
+                        </span>
+
+                        <strong id="order-weight">
+                            2.8 kg
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <span>
+                            Box ID
+                        </span>
+
+                        <strong id="box-id">
+                            2
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="failure-result"
+                class="failure-result hidden"
+            >
+
+                <h3>
+                    No suitable box found
+                </h3>
+
+                <p id="failure-message">
+                    The selected products cannot be packed into any available box.
+                </p>
+
+                <div class="failure-weight">
+
+                    Order Weight:
+
+                    <strong id="failure-weight">
+                        0 kg
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="{% static 'boxes/app.js' %}"></script>
+
+</body>
+</html>
