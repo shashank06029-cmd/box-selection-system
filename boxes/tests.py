@@ -1,8 +1,37 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from rest_framework.test import APIClient
 
 from .models import Box, Order, Product
 from .services import calculate_total_weight, recommend_box
+
+
+class ProductModelTests(TestCase):
+    """Tests for Product model validation."""
+
+    def test_product_rejects_zero_dimensions(self):
+        """Test that products cannot have zero dimensions."""
+        product = Product(
+            name="Invalid Product",
+            length=0,
+            width=5,
+            height=2,
+            weight=1,
+        )
+        with self.assertRaises(ValidationError):
+            product.full_clean()
+
+    def test_product_rejects_negative_weight(self):
+        """Test that products cannot have negative weight."""
+        product = Product(
+            name="Invalid Product",
+            length=10,
+            width=5,
+            height=2,
+            weight=-1,
+        )
+        with self.assertRaises(ValidationError):
+            product.full_clean()
 
 
 class BoxRecommendationTests(TestCase):
